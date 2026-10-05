@@ -21,7 +21,7 @@ router.get('/:id', (req, res) => {
 
 // POST /produto
 router.post('/', (req, res) => {
-  const { nome, marca, preco } = req.body;
+  const { nome, marca, preco } = req.body || {};
   if (!nome || !marca || preco === undefined) {
     return res.status(400).json({ erro: 'Campos nome, marca e preco são obrigatórios' });
   }
@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
 
 // PUT /produto/:id
 router.put('/:id', (req, res) => {
-  const { nome, marca, preco } = req.body;
+  const { nome, marca, preco } = req.body || {};
   if (!nome || !marca || preco === undefined) {
     return res.status(400).json({ erro: 'Campos nome, marca e preco são obrigatórios' });
   }

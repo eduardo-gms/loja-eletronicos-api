@@ -19,4 +19,29 @@ router.get('/:id', (req, res) => {
   });
 });
 
+// POST /produto
+router.post('/', (req, res) => {
+  const { nome, marca, preco } = req.body;
+  if (!nome || !marca || preco === undefined) {
+    return res.status(400).json({ erro: 'Campos nome, marca e preco são obrigatórios' });
+  }
+  db.query('INSERT INTO produto (nome, marca, preco) VALUES (?, ?, ?)', [nome, marca, preco], (err, result) => {
+    if (err) return res.status(500).json({ erro: 'Erro ao cadastrar produto' });
+    res.status(201).json({ id: result.insertId, nome, marca, preco });
+  });
+});
+
+// PUT /produto/:id
+router.put('/:id', (req, res) => {
+  const { nome, marca, preco } = req.body;
+  if (!nome || !marca || preco === undefined) {
+    return res.status(400).json({ erro: 'Campos nome, marca e preco são obrigatórios' });
+  }
+  db.query('UPDATE produto SET nome = ?, marca = ?, preco = ? WHERE id = ?', [nome, marca, preco, req.params.id], (err, result) => {
+    if (err) return res.status(500).json({ erro: 'Erro ao atualizar produto' });
+    if (result.affectedRows === 0) return res.status(404).json({ erro: 'Produto não encontrado' });
+    res.status(200).json({ id: Number(req.params.id), nome, marca, preco });
+  });
+});
+
 module.exports = router;

@@ -44,4 +44,13 @@ router.put('/:id', (req, res) => {
   });
 });
 
+// DELETE /produto/:id
+router.delete('/:id', (req, res) => {
+  db.query('DELETE FROM produto WHERE id = ?', [req.params.id], (err, result) => {
+    if (err) return res.status(500).json({ erro: 'Erro ao excluir produto' });
+    if (result.affectedRows === 0) return res.status(404).json({ erro: 'Produto não encontrado' });
+    res.status(200).json({ mensagem: 'Produto excluído com sucesso' });
+  });
+});
+
 module.exports = router;
